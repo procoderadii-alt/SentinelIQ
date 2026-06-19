@@ -1,0 +1,38 @@
+node_modules/
+dist/
+__pycache__/
+.env
+.env.*
+*.db
+*.sqlite
+*.log
+.vscode/
+.idea/
+# Frontend
+node_modules/
+dist/
+build/
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.env.*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
