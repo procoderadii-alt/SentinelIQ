@@ -949,7 +949,11 @@ export function App() {
       });
       
     // Phase 11: Connect to Real-time Alerts WebSockets
-    const ws = new WebSocket(`ws://${window.location.hostname}:8000/api/ws/alerts`);
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+
+const ws = new WebSocket(
+  `${protocol}://${window.location.hostname}/api/ws/alerts`
+);
     ws.onmessage = (event) => {
       try {
         const payload = JSON.parse(event.data);
