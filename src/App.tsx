@@ -843,10 +843,7 @@ export function App() {
   const [connection, setConnection] = useState("Connecting");
   
   // Auth states
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("sentineliq.token"));
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [authError, setAuthError] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
@@ -886,105 +883,3 @@ export function App() {
     setAuthError("");
   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900 text-slate-100 dark:bg-ink">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md rounded-lg border border-cyanline/30 bg-[#071114] p-8 shadow-2xl"
-        >
-          <div className="flex flex-col items-center border-b border-white/10 pb-6">
-            <div className="grid size-12 place-items-center rounded border border-cyanline bg-cyanline/10 text-cyanline">
-              <ShieldAlert size={28} />
-            </div>
-            <h1 className="mt-4 text-2xl font-bold tracking-tight text-white">SentinelIQ</h1>
-            <p className="text-sm text-slate-400">Crime Intelligence Platform Auth</p>
-          </div>
-          
-          <form onSubmit={handleLogin} className="mt-6 space-y-4">
-            {authError && (
-              <div className="rounded border border-rose-500/30 bg-rose-500/10 p-3 text-sm text-rose-300">
-                {authError}
-              </div>
-            )}
-            <div>
-              <label className="block text-xs uppercase tracking-wider text-slate-400">Email Address</label>
-              <input 
-                type="email" 
-                className="mt-1 w-full rounded border border-white/10 bg-slate-950/60 p-3 text-slate-100 outline-none focus:border-cyanline"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@sentineliq.local"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs uppercase tracking-wider text-slate-400">Password</label>
-              <input 
-                type="password" 
-                className="mt-1 w-full rounded border border-white/10 bg-slate-950/60 p-3 text-slate-100 outline-none focus:border-cyanline"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-              />
-            </div>
-            <button 
-              type="submit" 
-              className="mt-2 w-full rounded bg-cyanline py-3 font-semibold text-slate-900 transition hover:bg-cyanline/80"
-            >
-              Sign In
-            </button>
-          </form>
-        </motion.div>
-      </div>
-    );
-  }
-
-  return (
-    <DashboardContext.Provider value={dashboard}>
-    <div className={dark ? "dark" : ""}>
-      <main className="min-h-screen bg-slate-100 text-slate-950 dark:bg-ink dark:text-slate-100">
-        <aside className="fixed inset-y-0 left-0 z-20 hidden w-72 border-r border-white/10 bg-[#071114]/95 p-4 lg:block">
-          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-            <div className="grid size-11 place-items-center rounded border border-cyanline/40 bg-cyanline/10 text-cyanline"><ShieldAlert /></div>
-            <div>
-              <h1 className="text-xl font-semibold">SentinelIQ</h1>
-              <p className="text-xs text-slate-400">AI Crime Intelligence Platform</p>
-            </div>
-          </div>
-          <nav className="mt-4 h-[calc(100vh-108px)] space-y-1 overflow-auto pr-1">
-            {modules.map((module) => (
-              <button key={module} onClick={() => setActive(module)} className={`nav-item ${active === module ? "active" : ""}`}>
-                {module}
-              </button>
-            ))}
-          </nav>
-        </aside>
-        <div className="lg:pl-72">
-          <header className="sticky top-0 z-10 border-b border-white/10 bg-[#071114]/90 px-4 py-3 backdrop-blur md:px-6">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-xs uppercase tracking-[0.28em] text-cyanline">Operational Intelligence · {connection}</p>
-                <h2 className="text-2xl font-semibold text-white">{active}</h2>
-              </div>
-              <div className="flex items-center gap-2">
-                <label className="control hidden min-w-[280px] md:flex"><Search size={16} /><input placeholder="Global smart search" /></label>
-                <button className="icon-btn" onClick={() => setDark(!dark)} aria-label="Toggle theme">{dark ? <Sun size={18} /> : <Moon size={18} />}</button>
-                <button className="btn text-xs px-3 py-1.5 border border-cyanline/40 text-cyanline hover:bg-cyanline/10" onClick={handleLogout}>Sign Out</button>
-              </div>
-            </div>
-            <div className="mt-3 flex gap-2 overflow-auto lg:hidden">
-              {modules.map((module) => <button key={module} onClick={() => setActive(module)} className={`mobile-tab ${active === module ? "active" : ""}`}>{module}</button>)}
-            </div>
-          </header>
-          <section className="p-4 md:p-6">
-            <ModuleBody active={active} setTrigger={setRefreshTrigger} />
-          </section>
-        </div>
-      </main>
-    </div>
-    </DashboardContext.Provider>
-  );
-}
